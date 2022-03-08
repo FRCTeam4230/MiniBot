@@ -4,17 +4,15 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
 import frc.robot.subsystems.Drivetrain;
-import edu.wpi.first.wpilibj.GenericHID;
-import edu.wpi.first.wpilibj.XboxController;
 
 public class MyTeleOpDriveCommand extends CommandBase {
   /** Creates a new MyTeleOpDriveCommand. */
   Drivetrain locDriveTrain;
   XboxController locDriverJoyStick;
-
 
   public MyTeleOpDriveCommand(Drivetrain driveTrain, XboxController driverJoystick) {
     locDriveTrain = driveTrain;
@@ -26,20 +24,21 @@ public class MyTeleOpDriveCommand extends CommandBase {
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
+  public void initialize() {
+  }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    locDriveTrain.arcadeDrive(locDriverJoyStick.getLeftY()*Constants.driveTrain.speedMult,
-                        locDriverJoyStick.getRightX()*Constants.driveTrain.rotMult);
+    locDriveTrain.driveCartesian(locDriverJoyStick.getLeftY() * Constants.driveTrain.speedMult,
+        locDriverJoyStick.getLeftX() * Constants.driveTrain.speedMult,
+        locDriverJoyStick.getRightX() * Constants.driveTrain.rotMult);
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    if (interrupted)
-      locDriveTrain.arcadeDrive(0.0, 0.0);
+    locDriveTrain.stop();
   }
 
   // Returns true when the command should end.
