@@ -30,9 +30,11 @@ public class MyTeleOpDriveCommand extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    locDriveTrain.driveCartesian(locDriverJoyStick.getLeftY() * Constants.driveTrain.speedMult,
+    locDriveTrain.driveCartesian(
+        locDriverJoyStick.getLeftY() * Constants.driveTrain.speedMult,
         locDriverJoyStick.getLeftX() * Constants.driveTrain.speedMult,
-        locDriverJoyStick.getRightX() * Constants.driveTrain.rotMult);
+        locDriverJoyStick.getRightX() * Constants.driveTrain.rotMult,
+        false);
   }
 
   // Called once the command ends or is interrupted.
