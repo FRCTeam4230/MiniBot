@@ -6,7 +6,9 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
+import com.kauailabs.navx.frc.AHRS;
 
+import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.drive.MecanumDrive;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.CANId;
@@ -17,6 +19,8 @@ public class Drivetrain extends SubsystemBase {
   private WPI_TalonSRX bLeft, fRight;
   private WPI_VictorSPX fLeft, bRight;
   private MecanumDrive driveSys;
+
+  private final AHRS navx = new AHRS(SPI.Port.kMXP);
 
   public Drivetrain() {
     bLeft = new WPI_TalonSRX(CANId.kLeftMotorBackPort);
@@ -33,7 +37,11 @@ public class Drivetrain extends SubsystemBase {
   }
 
   public void driveCartesian(double ySpeed, double xSpeed, double zRotation) {
-    driveSys.driveCartesian(ySpeed, xSpeed, zRotation, 0);
+    driveCartesian(ySpeed, xSpeed, zRotation, false);
+  }
+
+  public void driveCartesian(double ySpeed, double xSpeed, double zRotation, boolean useGyro) {
+    driveSys.driveCartesian(ySpeed, xSpeed, zRotation, useGyro ? navx.getAngle() : 0);
   }
 
   public void stop() {
