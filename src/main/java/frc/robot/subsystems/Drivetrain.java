@@ -10,30 +10,31 @@ import com.kauailabs.navx.frc.AHRS;
 
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.drive.MecanumDrive;
+import edu.wpi.first.wpilibj.motorcontrol.MotorController;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.CANId;
 
 public class Drivetrain extends SubsystemBase {
   /** Creates a new Drivetrain. */
 
-  private WPI_TalonSRX bLeft, fRight;
-  private WPI_VictorSPX fLeft, bRight;
+  private MotorController fLeft = new WPI_VictorSPX(CANId.kLeftMotorFrontPort);
+  private MotorController bLeft = new WPI_TalonSRX(CANId.kLeftMotorBackPort);
+
+  private MotorController fRight = new WPI_VictorSPX(CANId.kRightMotorFrontPort);
+  private MotorController bRight = new WPI_TalonSRX(CANId.kRightMotorBackPort);
+
   private MecanumDrive driveSys;
 
   private final AHRS navx = new AHRS(SPI.Port.kMXP);
 
   public Drivetrain() {
-    bLeft = new WPI_TalonSRX(CANId.kLeftMotorBackPort);
-    bLeft.setInverted(true);
-    fLeft = new WPI_VictorSPX(CANId.kLeftMotorFrontPort);
-    fLeft.setInverted(true);
-
-    fRight = new WPI_TalonSRX(CANId.kRightMotorFrontPort);
     fRight.setInverted(true);
-    bRight = new WPI_VictorSPX(CANId.kRightMotorBackPort);
     bRight.setInverted(true);
 
     driveSys = new MecanumDrive(fLeft, bLeft, fRight, bRight);
+
+    navx.calibrate();
+    navx.reset();
   }
 
   public void driveCartesian(double ySpeed, double xSpeed, double zRotation) {
