@@ -4,24 +4,25 @@
 
 package frc.robot.subsystems;
 
+import java.util.stream.Stream;
+
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 import com.kauailabs.navx.frc.AHRS;
 
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.drive.MecanumDrive;
-import edu.wpi.first.wpilibj.motorcontrol.MotorController;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.CANId;
 
 public class Drivetrain extends SubsystemBase {
   /** Creates a new Drivetrain. */
 
-  private MotorController fLeft = new WPI_VictorSPX(CANId.kLeftMotorFrontPort);
-  private MotorController bLeft = new WPI_TalonSRX(CANId.kLeftMotorBackPort);
+  private WPI_VictorSPX fLeft = new WPI_VictorSPX(CANId.kLeftMotorFrontPort);
+  private WPI_TalonSRX bLeft = new WPI_TalonSRX(CANId.kLeftMotorBackPort);
 
-  private MotorController fRight = new WPI_VictorSPX(CANId.kRightMotorFrontPort);
-  private MotorController bRight = new WPI_TalonSRX(CANId.kRightMotorBackPort);
+  private WPI_VictorSPX fRight = new WPI_VictorSPX(CANId.kRightMotorFrontPort);
+  private WPI_TalonSRX bRight = new WPI_TalonSRX(CANId.kRightMotorBackPort);
 
   private MecanumDrive driveSys;
 
@@ -30,6 +31,11 @@ public class Drivetrain extends SubsystemBase {
   public Drivetrain() {
     fRight.setInverted(true);
     bRight.setInverted(true);
+
+    Stream.of(fLeft, bLeft, fRight, bRight).forEach(motor -> {
+      motor.configFactoryDefault();
+      motor.configOpenloopRamp(0);
+    });
 
     driveSys = new MecanumDrive(fLeft, bLeft, fRight, bRight);
 
