@@ -1,54 +1,52 @@
-// Copyright (c) FIRST and other WPILib contributors.
-// Open Source Software; you can modify and/or share it under the terms of
-// the WPILib BSD license file in the root directory of this project.
-
 package frc.robot;
 
-import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.subsystems.Drivetrain;
-import frc.robot.commands.MyTeleOpDriveCommand;
+import frc.robot.subsystems.DriveTrainSubsystem;
 import frc.robot.commands.Drive;
 
-/**
- * This class is where the bulk of the robot should be declared. Since Command-based is a
- * "declarative" paradigm, very little robot logic should actually be handled in the {@link Robot}
- * periodic methods (other than the scheduler calls). Instead, the structure of the robot (including
- * subsystems, commands, and button mappings) should be declared here.
- */
 public class RobotContainer {
-  // The robot's subsystems and commands are defined here...
-  private final XboxController driver1 = new XboxController(0);
+  //All instances of commands, subssytems, and controllers should be defined here
+  //It's not a hard rule, but if you follow this guideline your code will be more organized
+  private final XboxController driverController = new XboxController(0);
+  private final DriveTrainSubsystem driveTrain = new DriveTrainSubsystem();
 
-  private final Drivetrain m_drivetrain = new Drivetrain();
-
-  //private final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
-
-  private final MyTeleOpDriveCommand m_driveCommand = new MyTeleOpDriveCommand(m_drivetrain, driver1);
-  private final Drive m_autoCommand = new Drive(m_drivetrain);
-
-  /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
-    // Configure the button bindings
+
     configureButtonBindings();
-    m_drivetrain.setDefaultCommand(m_driveCommand);
+
+    configureDefaultCommands();
   }
 
-  /**
-   * Use this method to define your button->command mappings. Buttons can be created by
-   * instantiating a {@link GenericHID} or one of its subclasses ({@link
-   * edu.wpi.first.wpilibj.Joystick} or {@link XboxController}), and then passing it to a {@link
-   * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
-   */
+  //This is where we associate buttons with commands
+  //Usually goes like:
+  //When this button is pressed, run this command
+  //Once the button is released, end the command
+  //Right now we only have the Drive command, which we don't ever want to end
+  //A command that we want to always be running by default is a default command
+  //I've created a method called configureDefaultCommands that configure the default command
   private void configureButtonBindings() {}
 
-  /**
-   * Use this to pass the autonomous command to the main {@link Robot} class.
-   *
-   * @return the command to run in autonomous
-   */
+  //This is where the default commands are defined
+  private void configureDefaultCommands() {
+    //Each subsystem can get a default command, which is the command it runs unless another command
+    //is called that uses the subsystem
+    //Right now we only have the driveTrain subsystem
+    //We are passing in a new Drive command as an argument in the setDefaultCommand method
+    //The first argument is the driveTrain, the second and third arguments are double suppliers
+    //for forward (getLeftY) and rotation (getLeftX)
+    //The notation () -> body
+    //is called lambda notation, it's a quick way of creating a function
+    //Suppliers are functions, lambda notation let's us write functions using little code
+    //The arguments to the function are inside the (), right now we don't have any arguments, 
+    //so () is empty
+    //-> separate the () and body. It tells the computer that whatever comes after ->
+    //is the body of the function. The body is what the function definition
+    driveTrain.setDefaultCommand(new Drive(driveTrain, () -> driverController.getLeftY(), 
+    () -> driverController.getLeftX()));
+  }
+
   public Command getAutonomousCommand() {
-    return m_autoCommand;
+    return null;
   }
 }

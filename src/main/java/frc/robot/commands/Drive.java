@@ -1,46 +1,55 @@
-// Copyright (c) FIRST and other WPILib contributors.
-// Open Source Software; you can modify and/or share it under the terms of
-// the WPILib BSD license file in the root directory of this project.
-
 package frc.robot.commands;
 
-import frc.robot.subsystems.Drivetrain;
+import frc.robot.subsystems.DriveTrainSubsystem;
+
+import java.util.function.DoubleSupplier;
+
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
-/** An example command that uses an example subsystem. */
 public class Drive extends CommandBase {
-  @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
-  private final Drivetrain m_subsystem;
+  //To drive, we need the subsystem and suppliers for getting xbox inputs
+  private final DriveTrainSubsystem driveTrain;
+  private DoubleSupplier speedSupplier, rotationsupplier;
 
-  /**
-   * Creates a new Drive.
-   *
-   * @param subsystem The subsystem used by this command.
-   */
-  public Drive(Drivetrain subsystem) {
-    m_subsystem = subsystem;
-    // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(subsystem);
+  public Drive(DriveTrainSubsystem driveTrain, DoubleSupplier speedSupplier, DoubleSupplier rotationSupplier) {
+    //This sets the variables in this classs to the arguments
+    this.driveTrain = driveTrain;
+    this.speedSupplier = speedSupplier;
+    this.rotationsupplier = rotationSupplier;
+
+    //This command requires the drive train subsystem.
+    //addRequirements needs to exist in every command, otherwise two different commands might
+    //try to use the same subsystem, which would not work
+    addRequirements(driveTrain);
   }
 
-  // Called when the command is initially scheduled.
+  //This is executed once at the start of the command
+  //In this command, nothing needs to be done
   @Override
   public void initialize() {}
 
-  // Called every time the scheduler runs while the command is scheduled.
+  //This command is executed in a loop, along with isFinished
+  //So the command goes execute, isFinished, execute, isFinished, until isFinished returns true
   @Override
   public void execute() {
-    m_subsystem.arcadeDrive(0.4, 0
-    );
+    //The suppliers are functions, DoubleSuppliers are functions that return a double value when
+    //evaluated. The getAsDouble method evaluates the function and returns a double value
+    //The arcadeDrive method takes in a double (a number), not a supplier function
+    //So, we need to use getAsDouble, otherwise we would be passing in the wrong data type
+    driveTrain.arcadeDrive(speedSupplier.getAsDouble(), rotationsupplier.getAsDouble());
   }
 
-  // Called once the command ends or is interrupted.
+  //What to do if the command is interrupted
+  //If another command tries to use the same subsystem, this command will be interrupted
+  //the end method will run.
+  //If isFinished returns true, the end method will also run
   @Override
   public void end(boolean interrupted) {
-    m_subsystem.stop();
+    driveTrain.stop();
   }
 
-  // Returns true when the command should end.
+  //This returns true when the command should end
+  //Since we never want to lose the ability to drive the robot, this never returns true
   @Override
   public boolean isFinished() {
     return false;

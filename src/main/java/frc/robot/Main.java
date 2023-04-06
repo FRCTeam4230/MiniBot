@@ -6,6 +6,11 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.RobotBase;
 
+//NOTE
+//This is all pre-generated
+//You do not need to change anything here
+//The roboRIO is configured to look for this file, and this file starts all of your code
+
 /**
  * Do NOT add any static variables to this class, or any initialization at all. Unless you know what
  * you are doing, do not modify this file except to change the parameter class to the startRobot
