@@ -6,6 +6,7 @@ package frc.robot.commands;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.Constants.BallCatcherMultipliers;
 import frc.robot.Constants.PIDConstants;
 import frc.robot.subsystems.DriveTrainSubsystem;
 
@@ -36,7 +37,10 @@ public class CatchBallCommand extends CommandBase {
     double speed = distanceController.calculate(driveTrain.getEncoder());
     double turn = directionController.calculate(driveTrain.getRawHeading());
 
+    speed *= BallCatcherMultipliers.SPEED_MULTIPLIER;
+    turn *= BallCatcherMultipliers.TURN_MULTIPLIER;
 
+    driveTrain.arcadeDrive(speed, turn);
   }
 
   // Called once the command ends or is interrupted.
