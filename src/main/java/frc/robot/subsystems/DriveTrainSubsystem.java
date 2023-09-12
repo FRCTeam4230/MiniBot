@@ -8,6 +8,8 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.*;
+
+import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import frc.robot.Constants;
 import frc.robot.Constants.CANId;
@@ -17,6 +19,8 @@ public class DriveTrainSubsystem extends SubsystemBase {
   private WPI_TalonSRX backLeftMotor, frontRightMotor;
   private WPI_VictorSPX frontLeftMotor, backRightMotor;
   private DifferentialDrive differentialDrive;
+  private Encoder leftEncoder;
+  private Encoder rightEncoder;
   
   public DriveTrainSubsystem() {
     //Instantiate the motors
@@ -24,6 +28,9 @@ public class DriveTrainSubsystem extends SubsystemBase {
     frontRightMotor = new WPI_TalonSRX(CANId.kRightMotorFrontPort);
     frontLeftMotor = new WPI_VictorSPX(CANId.kLeftMotorFrontPort);
     backRightMotor = new WPI_VictorSPX(CANId.kRightMotorBackPort);
+
+    leftEncoder = new Encoder(Constants.driveTrain.LEFT_ENCODER_PORT1, Constants.driveTrain.LEFT_ENCODER_PORT2);
+    rightEncoder = new Encoder(Constants.driveTrain.RIGHT_ENCODER_PORT1, Constants.driveTrain.RIGHT_ENCODER_PORT2);
 
     //Code to configure motors
     configMotor(backLeftMotor);
