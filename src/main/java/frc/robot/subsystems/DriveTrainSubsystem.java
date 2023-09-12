@@ -37,6 +37,10 @@ public class DriveTrainSubsystem extends SubsystemBase {
     leftEncoder = new Encoder(Constants.driveTrain.LEFT_ENCODER_PORT1, Constants.driveTrain.LEFT_ENCODER_PORT2);
     rightEncoder = new Encoder(Constants.driveTrain.RIGHT_ENCODER_PORT1, Constants.driveTrain.RIGHT_ENCODER_PORT2);
 
+    leftEncoder.setDistancePerPulse(Constants.driveTrain.encoderDistancePerPulse);
+    rightEncoder.setDistancePerPulse(Constants.driveTrain.encoderDistancePerPulse);
+
+
     //Code to configure motors
     configMotor(backLeftMotor);
     configMotor(frontRightMotor);
@@ -72,15 +76,15 @@ public class DriveTrainSubsystem extends SubsystemBase {
   }
 
   public double getLeftEncoder() {
-    return 0;
+    return leftEncoder.getDistance();
   }
 
   public double getRightEncoder() {
-    return 0;
+    return -rightEncoder.getDistance();
   }
 
   public double getEncoder() {
-    return 0;
+    return (getLeftEncoder() + getRightEncoder()) / 2;
   }
 
   public double getRawHeading() {

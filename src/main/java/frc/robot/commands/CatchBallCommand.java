@@ -5,6 +5,7 @@
 package frc.robot.commands;
 
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants.BallCatcherMultipliers;
 import frc.robot.Constants.PIDConstants;
@@ -54,6 +55,6 @@ public class CatchBallCommand extends CommandBase {
   }
 
   public double getXTarget() {
-    return 0;
+    return NetworkTableInstance.getDefault().getEntry("target x").getDouble(driveTrain.getEncoder());
   }
 }
