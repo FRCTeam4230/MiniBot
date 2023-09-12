@@ -8,6 +8,9 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.*;
+import com.kauailabs.navx.frc.AHRS;
+
+import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import frc.robot.Constants;
 import frc.robot.Constants.CANId;
@@ -17,8 +20,11 @@ public class DriveTrainSubsystem extends SubsystemBase {
   private WPI_TalonSRX backLeftMotor, frontRightMotor;
   private WPI_VictorSPX frontLeftMotor, backRightMotor;
   private DifferentialDrive differentialDrive;
+  private AHRS navx;
   
   public DriveTrainSubsystem() {
+    navx = new AHRS(SPI.Port.kMXP);
+    navx.calibrate();
     //Instantiate the motors
     backLeftMotor = new WPI_TalonSRX(CANId.kLeftMotorBackPort);
     frontRightMotor = new WPI_TalonSRX(CANId.kRightMotorFrontPort);
@@ -59,6 +65,22 @@ public class DriveTrainSubsystem extends SubsystemBase {
     differentialDrive.arcadeDrive(0, 0);
   }
 
+  public double getLeftEncoder() {
+    return 0;
+  }
+
+  public double getRightEncoder() {
+    return 0;
+  }
+
+  public double getEncoder() {
+    return 0;
+  }
+
+  public double getRawHeading() {
+    return navx.getAngle();
+  }
+
   //Method to configure motors
   private void configMotor(WPI_TalonSRX motor) {
     motor.configFactoryDefault();
@@ -69,6 +91,7 @@ public class DriveTrainSubsystem extends SubsystemBase {
     motor.configAllSettings(config);
     motor.setNeutralMode(NeutralMode.Coast);
   }
+
 
   //Commands that are here by default, we don't need them for anything right now
   @Override

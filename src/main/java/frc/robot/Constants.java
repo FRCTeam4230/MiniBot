@@ -14,4 +14,13 @@ public final class Constants {
         public static final double rotMult = 0.45;
         public static final double RAMP_RATE = 0.2;
     }
+
+    public static final class PIDConstants {
+
+        public static final double DISTANCE_P = 0;
+        public static final double DISTANCE_I = 0;
+        public static final double DISTANCE_D = 0;
+        public static final double DIRECTION_P = 0;
+
+    }
 }
