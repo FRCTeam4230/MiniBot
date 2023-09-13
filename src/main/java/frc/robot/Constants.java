@@ -17,7 +17,7 @@ public final class Constants {
         public static final int LEFT_ENCODER_PORT2 = 1;
         public static final int RIGHT_ENCODER_PORT1 = 2;
         public static final int RIGHT_ENCODER_PORT2 = 3;
-        public static final double encoderDistancePerPulse = 0;
+        public static final double encoderDistancePerPulse = 1 / 4138.8584;//Converts pulses to meters
     }
 
     public static final class BallCatcherMultipliers {
