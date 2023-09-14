@@ -1,10 +1,10 @@
 package frc.robot.commands;
 
-import frc.robot.subsystems.DriveTrainSubsystem;
-
 import java.util.function.DoubleSupplier;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.Constants;
+import frc.robot.subsystems.DriveTrainSubsystem;
 
 public class Drive extends CommandBase {
   //To drive, we need the subsystem and suppliers for getting xbox inputs
@@ -36,7 +36,8 @@ public class Drive extends CommandBase {
     //evaluated. The getAsDouble method evaluates the function and returns a double value
     //The arcadeDrive method takes in a double (a number), not a supplier function
     //So, we need to use getAsDouble, otherwise we would be passing in the wrong data type
-    driveTrain.arcadeDrive(speedSupplier.getAsDouble(), rotationsupplier.getAsDouble());
+    driveTrain.arcadeDrive(speedSupplier.getAsDouble() * Constants.driveTrain.speedMult,
+        rotationsupplier.getAsDouble() * Constants.driveTrain.speedMult);
   }
 
   //What to do if the command is interrupted

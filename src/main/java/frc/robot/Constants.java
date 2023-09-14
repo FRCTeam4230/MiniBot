@@ -22,16 +22,16 @@ public final class Constants {
 
     public static final class BallCatcherMultipliers {
 
-        public static final double SPEED_MULTIPLIER = 0.5;
-        public static final double TURN_MULTIPLIER = 0.5;
+        public static final double MAX_SPEED = .56;
+        public static final double MAX_TURN_SPEED = 0.5;
 
     }
 
     public static final class PIDConstants {
-        public static final double DISTANCE_P = 0.1;
+        public static final double DISTANCE_P = 3;
         public static final double DISTANCE_I = 0;
-        public static final double DISTANCE_D = 0;
-        public static final double DIRECTION_P = 0.1;
+        public static final double DISTANCE_D = .5;
+        public static final double DIRECTION_P = -0.1;
 
     }
 }

@@ -4,6 +4,7 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj2.command.CommandBase;
@@ -28,6 +29,10 @@ public class CatchBallCommand extends CommandBase {
   @Override
   public void initialize() {
     directionController.setSetpoint(0);
+    // NetworkTableInstance.getDefault().getEntry("target x").setDouble(0);
+
+    // driveTrain.resetEncoders();
+    // driveTrain.resetHeading();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -35,11 +40,15 @@ public class CatchBallCommand extends CommandBase {
   public void execute() {
     distanceController.setSetpoint(getXTarget());
 
-    double speed = distanceController.calculate(driveTrain.getEncoder());
+    double speed = distanceController.calculate(driveTrain.getRightEncoder());
     double turn = directionController.calculate(driveTrain.getRawHeading());
 
-    speed *= BallCatcherMultipliers.SPEED_MULTIPLIER;
-    turn *= BallCatcherMultipliers.TURN_MULTIPLIER;
+    speed = MathUtil.clamp(speed, -BallCatcherMultipliers.MAX_SPEED, BallCatcherMultipliers.MAX_SPEED);
+    turn = MathUtil.clamp(turn, -BallCatcherMultipliers.MAX_TURN_SPEED, BallCatcherMultipliers.MAX_TURN_SPEED);
+
+
+    NetworkTableInstance.getDefault().getEntry("speed").setDouble(speed);
+    NetworkTableInstance.getDefault().getEntry("turn").setDouble(turn);
 
     driveTrain.arcadeDrive(speed, turn);
   }

@@ -4,15 +4,18 @@
 
 package frc.robot.subsystems;
 
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
-
 import com.ctre.phoenix.motorcontrol.NeutralMode;
-import com.ctre.phoenix.motorcontrol.can.*;
+import com.ctre.phoenix.motorcontrol.can.TalonSRXConfiguration;
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
+import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 import com.kauailabs.navx.frc.AHRS;
 
-import edu.wpi.first.wpilibj.SPI;
+import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj.Encoder;
+import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.Constants.CANId;
 
@@ -28,6 +31,7 @@ public class DriveTrainSubsystem extends SubsystemBase {
   public DriveTrainSubsystem() {
     navx = new AHRS(SPI.Port.kMXP);
     navx.calibrate();
+    navx.reset();
     //Instantiate the motors
     backLeftMotor = new WPI_TalonSRX(CANId.kLeftMotorBackPort);
     frontRightMotor = new WPI_TalonSRX(CANId.kRightMotorFrontPort);
@@ -59,6 +63,17 @@ public class DriveTrainSubsystem extends SubsystemBase {
 
     //Instantiating the DifferentialDrive object with the leading motors
     differentialDrive = new DifferentialDrive(backLeftMotor, frontRightMotor);
+
+    SmartDashboard.putData(this);
+  }
+
+  public void resetEncoders() {
+    leftEncoder.reset();
+    rightEncoder.reset();
+  }
+
+  public void resetHeading() {
+    navx.reset();
   }
 
   //Method to drive the robot
@@ -66,8 +81,8 @@ public class DriveTrainSubsystem extends SubsystemBase {
     //Inputs are multiplied by constants to limit the max speed
     //100% output is much too high for out purposes
     differentialDrive.arcadeDrive(
-      forward * Constants.driveTrain.speedMult, 
-      rotation * Constants.driveTrain.rotMult);
+        forward,
+        rotation);
   }
 
   //Stop the drive train
@@ -109,4 +124,13 @@ public class DriveTrainSubsystem extends SubsystemBase {
 
   @Override
   public void simulationPeriodic() {}
+
+  @Override
+  public void initSendable(SendableBuilder builder) {
+    super.initSendable(builder);
+    builder.addDoubleProperty("encoder pos", this::getEncoder, null);
+    builder.addDoubleProperty("lencoder pos", this::getLeftEncoder, null);
+    builder.addDoubleProperty("rencoder pos", this::getRightEncoder, null);
+    builder.addDoubleProperty("heading", this::getRawHeading, null);
+  }
 }
