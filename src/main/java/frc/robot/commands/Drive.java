@@ -24,9 +24,13 @@ public class Drive extends CommandBase {
   }
 
   //This is executed once at the start of the command
-  //In this command, nothing needs to be done
   @Override
-  public void initialize() {}
+  public void initialize() {
+    NetworkTableInstance.getDefault().getEntry("target x").setDouble(0);
+
+    driveTrain.resetEncoders();
+    driveTrain.resetHeading();
+  }
 
   //This command is executed in a loop, along with isFinished
   //So the command goes execute, isFinished, execute, isFinished, until isFinished returns true

@@ -29,10 +29,6 @@ public class CatchBallCommand extends CommandBase {
   @Override
   public void initialize() {
     directionController.setSetpoint(0);
-    // NetworkTableInstance.getDefault().getEntry("target x").setDouble(0);
-
-    // driveTrain.resetEncoders();
-    // driveTrain.resetHeading();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
