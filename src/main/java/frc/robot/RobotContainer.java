@@ -3,6 +3,7 @@ package frc.robot;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 // import frc.robot.commands.CatchBallCommand;
+import frc.robot.commands.CatchBallCommand;
 import frc.robot.commands.Drive;
 import frc.robot.subsystems.DriveTrainSubsystem;
 
@@ -12,6 +13,7 @@ public class RobotContainer {
   // organized
   private final XboxController driverController = new XboxController(0);
   private final DriveTrainSubsystem driveTrain = new DriveTrainSubsystem();
+  private final CatchBallCommand catchBallCommand = new CatchBallCommand(driveTrain);
 
   public RobotContainer() {
 
@@ -58,6 +60,6 @@ public class RobotContainer {
 
   // private final Command autoCommand = new CatchBallCommand(driveTrain);
   public Command getAutonomousCommand() {
-    return null;
+    return catchBallCommand;
   }
 }
