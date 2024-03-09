@@ -10,8 +10,8 @@ public final class Constants {
         public static final int kRightMotorBackPort = 4;
     }
     public static final class driveTrain {
-        public static final double speedMult = 0.64;
-        public static final double rotMult = 0.45;
+        public static final double speedMult = 0.80;
+        public static final double rotMult = 0.80;
         public static final double RAMP_RATE = 0.2;
         public static final int LEFT_ENCODER_PORT1 = 0;
         public static final int LEFT_ENCODER_PORT2 = 1;

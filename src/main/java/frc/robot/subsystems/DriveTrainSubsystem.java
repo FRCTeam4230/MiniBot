@@ -30,7 +30,6 @@ public class DriveTrainSubsystem extends SubsystemBase {
   
   public DriveTrainSubsystem() {
     navx = new AHRS(SPI.Port.kMXP);
-    navx.calibrate();
     navx.reset();
     //Instantiate the motors
     backLeftMotor = new WPI_TalonSRX(CANId.kLeftMotorBackPort);

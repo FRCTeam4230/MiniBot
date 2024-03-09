@@ -7,12 +7,12 @@ package frc.robot.commands;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.networktables.NetworkTableInstance;
-import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants.BallCatcherMultipliers;
 import frc.robot.Constants.PIDConstants;
 import frc.robot.subsystems.DriveTrainSubsystem;
 
-public class CatchBallCommand extends CommandBase {
+public class CatchBallCommand extends Command {
   private DriveTrainSubsystem driveTrain;
   private PIDController distanceController, directionController;
 
